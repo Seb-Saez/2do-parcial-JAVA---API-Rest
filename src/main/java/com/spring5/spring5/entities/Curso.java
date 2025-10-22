@@ -3,6 +3,7 @@ package com.spring5.spring5.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,13 +19,14 @@ public class Curso {
     private long id;
     private String nombre;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "curso_estudiante",
             joinColumns = @JoinColumn(name = "curso_id"),
             inverseJoinColumns = @JoinColumn(name = "estudiante_id")
     )
-    private List<Estudiante> estudiantes;
+    @Builder.Default // ojo aca toque
+    private List<Estudiante> estudiantes = new ArrayList<>(); // aca toque que inicializo el array
 
     @ManyToOne
     @JoinColumn(name = "profesor_id")
